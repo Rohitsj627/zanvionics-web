@@ -1,0 +1,42 @@
+.infinite-scroll-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.infinite-scroll-track {
+  display: flex;
+  width: fit-content;
+  animation: scroll-left linear infinite;
+  animation-duration: 30s;
+}
+
+.scroll-normal .infinite-scroll-track {
+  animation-name: scroll-left;
+}
+
+.scroll-reverse .infinite-scroll-track {
+  animation-name: scroll-right;
+}
+
+.infinite-scroll-content {
+  display: flex;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
