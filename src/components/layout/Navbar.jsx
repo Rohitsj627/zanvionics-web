@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -12,6 +14,19 @@ const Navbar = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'About', path: '/about' },
+        { name: 'Services', path: '/services' },
+        { name: 'Portfolio', path: '/portfolio' },
+        { name: 'Careers', path: '/careers' },
+        { name: 'Contact', path: '/contact' },
+    ];
 
     return (
         <nav
@@ -33,16 +48,9 @@ const Navbar = () => {
                         </span>
                     </Link>
 
-                    {/* Navigation Links */}
+                    {/* Desktop Navigation Links */}
                     <div className="hidden md:flex items-center gap-8">
-                        {[
-                            { name: 'Home', path: '/' },
-                            { name: 'About', path: '/about' },
-                            { name: 'Services', path: '/services' },
-                            { name: 'Portfolio', path: '/portfolio' },
-                            { name: 'Careers', path: '/careers' },
-                            { name: 'Contact', path: '/contact' }
-                        ].map((item) => (
+                        {navLinks.map((item) => (
                             <Link
                                 key={item.name}
                                 to={item.path}
@@ -53,14 +61,47 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* CTA Button */}
-                    <Link 
-                        to="/contact"
-                        className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
-                    >
-                        Get Started
-                    </Link>
+                    {/* CTA Button & Mobile Menu Toggle */}
+                    <div className="flex items-center gap-4">
+                        <Link
+                            to="/contact"
+                            className="hidden md:inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
+                        >
+                            Get Started
+                        </Link>
+
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={toggleMobileMenu}
+                            className="text-white md:hidden focus:outline-none text-2xl"
+                        >
+                            {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+                        </button>
+                    </div>
                 </div>
+
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="md:hidden mt-4 flex flex-col gap-4 bg-black/80 rounded-lg p-4">
+                        {navLinks.map((item) => (
+                            <Link
+                                key={item.name}
+                                to={item.path}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="text-gray-200 hover:text-purple-400 transition-colors duration-300"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        <Link
+                            to="/contact"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-full text-center"
+                        >
+                            Get Started
+                        </Link>
+                    </div>
+                )}
             </div>
         </nav>
     );
