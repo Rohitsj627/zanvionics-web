@@ -15,7 +15,7 @@ function Home() {
       <Brands />
       <ServicesSection />
       <TopProjects />
-      <TopBlogs />
+      {/* <TopBlogs /> */}
       <Testimonials />
       <CareersSection />
       <ContactSection />

@@ -1,203 +1,218 @@
-import React, { useEffect } from "react";
-import useInView from "../../hook/useInView";
+import React, { useState, useEffect } from "react";
 
-const FeatureTag = ({ text }) => (
-  <span className="px-4 py-2 bg-gray-800/60 text-gray-300 rounded-full border border-gray-700">
-    {text}
-  </span>
-);
+// Simple intersection observer hook
+const useInView = (threshold = 0.1) => {
+  const [ref, setRef] = useState(null);
+  const [isInView, setIsInView] = useState(false);
 
-const SectionLayout = ({ title, subtitle, description, features, mockup, reverse }) => {
-  const [ref, isInView] = useInView(0.5);
+  useEffect(() => {
+    if (!ref) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold }
+    );
+
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, [ref, threshold]);
+
+  return [setRef, isInView];
+};
+
+const ServiceCard = ({ icon, title, description, features, index, isActive, onHover }) => {
+  const [ref, isInView] = useInView(0.3);
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out transform ${
-        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      } grid grid-cols-1 lg:grid-cols-2 gap-12 items-center my-20 md:my-50 ${
-        reverse ? "lg:flex-row-reverse" : ""
-      }`}
+      className={`group relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 transition-all duration-700 ease-out cursor-pointer
+        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+        ${isActive ? 'border-teal-500/50 shadow-2xl shadow-teal-500/20 scale-105' : 'hover:border-gray-600/70 hover:shadow-xl hover:shadow-gray-900/20 hover:scale-102'}
+      `}
+      style={{ transitionDelay: `${index * 150}ms` }}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={() => onHover(null)}
     >
-      <div className={reverse ? "order-2" : "order-1"}>
-        <div className="inline-block bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-4 py-2 mb-6">
-          <span className="text-gray-300 text-sm font-medium">{title}</span>
-        </div>
-        <h3 className="text-2xl md:text-3xl font-bold text-gray-200 mb-6">{subtitle}</h3>
-        <p className="text-gray-300 text-lg mb-8 leading-relaxed">{description}</p>
-        <div className="flex flex-wrap gap-3">
-          {features.map((text, idx) => (
-            <FeatureTag key={idx} text={text} />
+      {/* Gradient overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-br from-teal-500/5 to-blue-600/5 rounded-2xl transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+      
+      {/* Icon */}
+      <div className={`relative w-16 h-16 mb-6 rounded-xl bg-gradient-to-br from-teal-500/20 to-blue-600/20 flex items-center justify-center transition-all duration-500 group-hover:scale-110 ${isActive ? 'shadow-lg shadow-teal-500/30' : ''}`}>
+        <div className="text-2xl">{icon}</div>
+      </div>
+
+      {/* Content */}
+      <div className="relative">
+        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-teal-300 transition-colors duration-300">
+          {title}
+        </h3>
+        <p className="text-gray-400 mb-6 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+          {description}
+        </p>
+
+        {/* Features */}
+        <div className="flex flex-wrap gap-2">
+          {features.map((feature, idx) => (
+            <span
+              key={idx}
+              className={`px-3 py-1 text-xs font-medium rounded-full transition-all duration-300
+                ${isActive 
+                  ? 'bg-teal-600/30 text-teal-200 border border-teal-500/30' 
+                  : 'bg-gray-800/60 text-gray-400 border border-gray-700/50 group-hover:bg-gray-700/60 group-hover:text-gray-300'
+                }`}
+            >
+              {feature}
+            </span>
           ))}
         </div>
       </div>
-      <div className={reverse ? "order-1" : "order-2"}>{mockup}</div>
+
+      {/* Hover effect lines */}
+      {/* <div className="absolute top-0 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-600 transition-all duration-500 group-hover:w-full" />
+      <div className="absolute bottom-0 right-0 w-0 h-0.5 bg-gradient-to-l from-teal-500 to-blue-600 transition-all duration-500 group-hover:w-full" /> */}
     </div>
   );
 };
 
-// Custom Mockups for each service
-
-const WebsiteMockup = () => (
-    <div className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden">
-        <div className="bg-gray-800 p-4 text-white font-semibold">Home | About | Services | Contact</div>
-        <div className="bg-gradient-to-br from-purple-700 to-pink-600 p-6">
-            <h2 className="text-white text-xl font-bold">Your Business Website</h2>
-            <p className="text-gray-200 mt-2">Fast. Responsive. Optimized.</p>
-        </div>
-        <div className="p-4 text-gray-300 space-y-2">
-            <div className="bg-gray-800 h-4 w-3/4 rounded"></div>
-            <div className="bg-gray-800 h-4 w-2/3 rounded"></div>
-            <div className="bg-gray-800 h-4 w-1/2 rounded"></div>
-        </div>
+const FloatingParticles = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 bg-teal-400/20 rounded-full animate-float"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 10}s`,
+            animationDuration: `${15 + Math.random() * 10}s`,
+          }}
+        />
+      ))}
     </div>
-);
-
-const ChatMockup = () => (
-    <div className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full"></div>
-            <div>
-                <div className="text-white font-semibold text-sm">AI Assistant</div>
-                <div className="text-green-400 text-xs">Online</div>
-            </div>
-        </div>
-        <div className="space-y-3">
-            <div className="bg-gray-800 rounded-lg p-3">
-                <div className="text-white text-sm font-medium mb-1">How can I assist?</div>
-                <div className="text-gray-400 text-xs">Draft emails, summarize meetings, set reminders...</div>
-            </div>
-            <div className="bg-purple-600 rounded-lg p-3 ml-8">
-                <div className="text-white text-sm">Schedule client call at 3 PM</div>
-            </div>
-            <div className="flex gap-2">
-                <button className="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Summarize</button>
-                <button className="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Generate Email</button>
-            </div>
-        </div>
-    </div>
-);
-
-const AppDevMockup = () => (
-    <div className="bg-gray-900/80 rounded-xl border border-gray-800 p-4">
-        <div className="bg-gray-800 p-3 rounded-md text-gray-300">
-            <div className="text-white font-semibold mb-2">MyFitness App</div>
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-500 p-4 rounded-lg text-sm">
-                <p className="text-white">Welcome back, Alex 👋</p>
-                <p className="text-gray-200 mt-1">Steps today: <strong>8,234</strong></p>
-            </div>
-            <div className="mt-4 space-y-2">
-                <div className="bg-gray-700 h-4 w-3/4 rounded"></div>
-                <div className="bg-gray-700 h-4 w-2/3 rounded"></div>
-            </div>
-        </div>
-    </div>
-);
-
-const SEOMockup = () => (
-    <div className="bg-gray-900/80 border border-gray-800 rounded-xl p-4 text-gray-300">
-        <div className="bg-gray-800 p-3 rounded mb-3">
-            <div className="text-sm font-medium text-white">Search Engine Preview</div>
-        </div>
-        <div className="space-y-2">
-            <div className="text-blue-400 underline text-sm">www.example.com/best-seo-agency</div>
-            <div className="text-white text-md font-semibold">Best SEO Agency in 2025 | Boost Rankings Fast</div>
-            <div className="text-gray-400 text-sm">We help your website rank higher with proven SEO strategies, keyword research, and optimization.</div>
-        </div>
-    </div>
-);
-
-const MarketingMockup = () => (
-    <div className="bg-gray-900/80 border border-gray-800 rounded-xl p-4">
-        <div className="text-white text-sm font-semibold mb-4">Campaign Analytics</div>
-        <div className="space-y-2">
-            <div className="bg-purple-500/30 p-3 rounded-md flex justify-between items-center">
-                <div className="text-gray-200">CTR</div>
-                <div className="text-white font-bold">5.4%</div>
-            </div>
-            <div className="bg-pink-500/30 p-3 rounded-md flex justify-between items-center">
-                <div className="text-gray-200">Leads</div>
-                <div className="text-white font-bold">264</div>
-            </div>
-            <div className="bg-green-500/30 p-3 rounded-md flex justify-between items-center">
-                <div className="text-gray-200">Conversions</div>
-                <div className="text-white font-bold">72</div>
-            </div>
-        </div>
-    </div>
-);
+  );
+};
 
 export default function ServicesSection() {
+  const [activeCard, setActiveCard] = useState(null);
+  const [headerRef, headerInView] = useInView(0.3);
 
-     return (
+  const services = [
+    {
+      icon: "🌐",
+      title: "Website Development",
+      description: "High-performance web platforms built with modern frameworks. From landing pages to full-stack applications, we create scalable solutions.",
+      features: ["Next.js", "React", "Tailwind CSS", "SEO Optimized", "Mobile First"]
+    },
+    {
+      icon: "🤖",
+      title: "AI Integration",
+      description: "Intelligent automation solutions that handle repetitive tasks, analyze data, and enhance user experiences with cutting-edge AI.",
+      features: ["OpenAI API", "Automation", "Data Analysis", "Custom Models", "Chatbots"]
+    },
+    {
+      icon: "📱",
+      title: "Mobile Apps",
+      description: "Beautiful, performant mobile applications for iOS and Android using cross-platform technologies and native capabilities.",
+      features: ["React Native", "Flutter", "Native iOS", "Android", "Cross-platform"]
+    },
+    {
+      icon: "🚀",
+      title: "Performance Optimization",
+      description: "Boost your digital presence with technical SEO, speed optimization, and conversion rate improvements that drive results.",
+      features: ["Core Web Vitals", "SEO Audit", "Speed Optimization", "Analytics", "A/B Testing"]
+    },
+    {
+      icon: "📊",
+      title: "Digital Strategy",
+      description: "Data-driven marketing campaigns and growth strategies designed to reach your target audience and maximize conversions.",
+      features: ["Growth Hacking", "Content Strategy", "PPC Campaigns", "Social Media", "Email Marketing"]
+    },
+    {
+      icon: "⚡",
+      title: "Automation Solutions",
+      description: "Streamline your workflows with custom automation tools, API integrations, and process optimization solutions.",
+      features: ["Workflow Automation", "API Integration", "Custom Tools", "Process Optimization", "Zapier"]
+    }
+  ];
+
+  return (
     <section className="min-h-screen bg-black relative py-20 overflow-hidden">
-      <div className="absolute inset-0">
-        {/* {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white opacity-10 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-            }}
-          />
-        ))} */}
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-900/5 via-black to-blue-900/5" />
+      <FloatingParticles />
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px'
+        }} />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Our Services</span>
+        {/* Header */}
+        <div 
+          ref={headerRef}
+          className={`text-center mb-20 transition-all duration-1000 ease-out ${
+            headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-white text-sm font-medium">Our Services</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           </div>
-          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
-            We design, develop, and implement automation tools that help you work smarter, not harder
+          
+          
+          <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            We design, develop, and implement solutions that transform ideas into powerful digital experiences
           </p>
         </div>
 
-        <SectionLayout
-          title="Website Development"
-          subtitle="High-Performance Web Platforms"
-          description="From landing pages to full-stack apps, we create fast, responsive, and scalable web solutions tailored to your brand."
-          features={["Next.js", "Tailwind CSS", "CMS Integration", "SEO Friendly"]}
-          mockup={<WebsiteMockup />}
-        />
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <ServiceCard
+              key={index}
+              index={index}
+              icon={service.icon}
+              title={service.title}
+              description={service.description}
+              features={service.features}
+            />
+          ))}
+        </div>
 
-        <SectionLayout
-          title="AI Assistant"
-          subtitle="Delegate Daily Tasks"
-          description="Let our AI assistants handle repetitive tasks—scheduling, summarizing, automating—so you can focus on what matters."
-          features={["Summarization", "Email Drafting", "Task Automation"]}
-          mockup={<ChatMockup />}
-          reverse
-        />
-
-        <SectionLayout
-          title="App Development"
-          subtitle="Seamless Mobile Experiences"
-          description="We craft beautiful, high-performance apps for iOS and Android using cross-platform frameworks and native capabilities."
-          features={["React Native", "Flutter", "Cross-platform", "Offline Support"]}
-          mockup={<AppDevMockup />}
-        />
-
-        <SectionLayout
-          title="SEO Optimization"
-          subtitle="Climb the Search Ranks"
-          description="We audit, optimize, and grow your visibility through technical SEO, keyword targeting, and great content."
-          features={["Technical SEO", "Content Optimization", "Keyword Research", "Backlinks"]}
-          mockup={<SEOMockup />}
-          reverse
-        />
-
-        <SectionLayout
-          title="Digital Marketing"
-          subtitle="Reach & Convert Your Audience"
-          description="Our campaigns are built for performance—designed to engage, convert, and scale through paid ads and content strategies."
-          features={["PPC", "Analytics", "Email Funnels", "Content Creation"]}
-          mockup={<MarketingMockup />}
-        />
+        {/* Call to action */}
+        <div className="text-center mt-20">
+          <div className="inline-flex items-center gap-4">
+            <button className="px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              Start Your Project
+            </button>
+            <button className="px-8 py-4 border border-gray-600 text-gray-300 font-semibold rounded-full hover:border-gray-500 hover:text-white transition-all duration-300">
+              View Portfolio
+            </button>
+          </div>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          33% { transform: translateY(-10px) rotate(120deg); }
+          66% { transform: translateY(5px) rotate(240deg); }
+        }
+        .animate-float {
+          animation: float linear infinite;
+        }
+      `}</style>
     </section>
   );
 }

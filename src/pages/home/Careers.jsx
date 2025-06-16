@@ -38,21 +38,21 @@ const JobCard = ({ position }) => {
       <h3 className="text-xl font-bold text-white mb-2">{position.title}</h3>
       <div className="space-y-2 mb-4">
         <div className="flex items-center gap-2 text-gray-400">
-          <span className="text-purple-400">Department:</span>
+          <span className="text-[#00B4A8]">Department:</span>
           <span>{position.department}</span>
         </div>
         <div className="flex items-center gap-2 text-gray-400">
-          <span className="text-purple-400">Location:</span>
+          <span className="text-[#00B4A8]">Location:</span>
           <span>{position.location}</span>
         </div>
         <div className="flex items-center gap-2 text-gray-400">
-          <span className="text-purple-400">Type:</span>
+          <span className="text-[#00B4A8]">Type:</span>
           <span>{position.type}</span>
         </div>
       </div>
       <Link
         to="/careers"
-        className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300"
+        className="inline-block bg-[#00B4A8] hover:bg-[#007399] text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300"
       >
         Apply Now
       </Link>
@@ -65,12 +65,14 @@ export default function CareersSection() {
     <section className="py-20 bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Join Our Team</span>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-teal-300 text-sm font-medium">Join Our Team</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          {/* <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Career Opportunities
-          </h2>
+          </h2> */}
           <p className="text-gray-400 max-w-2xl mx-auto">
             Join our team of innovators and help shape the future of technology.
             We're always looking for talented individuals to join our mission.
@@ -86,7 +88,7 @@ export default function CareersSection() {
         <div className="text-center mt-12">
           <Link
             to="/careers"
-            className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+            className="inline-flex items-center gap-2 text-[#00B4A8] hover:text-[#007399] transition-colors"
           >
             View All Positions
             <span>→</span>

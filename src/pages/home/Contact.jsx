@@ -16,9 +16,11 @@ export default function ContactSection() {
             transition={{ duration: 0.5 }}
             className="space-y-8"
           >
-            <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2">
-              <span className="text-purple-300 text-sm font-medium">Get in Touch</span>
-            </div>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-teal-300 text-sm font-medium">Get In Touch</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+          </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white">
               Let's Build Something Amazing Together
             </h2>
@@ -28,15 +30,15 @@ export default function ContactSection() {
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-gray-300">
-                <span className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">📍</span>
+                <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📍</span>
                 <span>123 Tech Street, Silicon Valley, CA 94025</span>
               </div>
               <div className="flex items-center gap-4 text-gray-300">
-                <span className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">📧</span>
+                <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📧</span>
                 <span>contact@zanvionics.com</span>
               </div>
               <div className="flex items-center gap-4 text-gray-300">
-                <span className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">📞</span>
+                <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📞</span>
                 <span>+1 (555) 123-4567</span>
               </div>
             </div>
@@ -82,7 +84,7 @@ export default function ContactSection() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-300"
+                className="w-full bg-[#00B4A8] hover:bg-[#007399] text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-300"
               >
                 Send Message
               </button>

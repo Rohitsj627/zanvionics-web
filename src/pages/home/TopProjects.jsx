@@ -1,87 +1,223 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import useInView from '../../hook/useInView';
+import React, { useState, useEffect } from 'react';
+
+// Simple intersection observer hook
+const useInView = (threshold = 0.1) => {
+  const [ref, setRef] = useState(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!ref) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold }
+    );
+
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, [ref, threshold]);
+
+  return [setRef, isInView];
+};
 
 const projects = [
+  
   {
-    title: "AI-Powered Analytics Dashboard",
-    description: "Real-time data visualization platform with predictive analytics",
-    image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg",
-    tags: ["React", "D3.js", "Machine Learning"]
+    title: "Web Development",
+    description: "High-performance web applications built with cutting-edge technologies and optimized for speed and scalability.",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop",
+    tags: ["Web Development", "UX Research"],
+    category: "Development"
   },
   {
-    title: "Smart Home Automation App",
-    description: "IoT-based home control system with voice commands",
-    image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
-    tags: ["React Native", "IoT", "Node.js"]
+    title: "Mobile App Development",
+    description: "Native and cross-platform mobile applications designed for seamless user experiences on iOS and Android.",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+    tags: ["Mobile Dev", "React Native"],
+    category: "Development"
   },
   {
-    title: "E-commerce Platform",
-    description: "Scalable online marketplace with AI recommendations",
-    image: "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg",
-    tags: ["Next.js", "Stripe", "PostgreSQL"]
-  }
+    title: "E-commerce Solutions",
+    description: "Complete online store platforms with payment integration, inventory management, and analytics dashboard.",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+    tags: ["E-commerce", "Full Stack"],
+    category: "Development"
+  },
+  {
+    title: "E-commerce Solutions",
+    description: "Complete online store platforms with payment integration, inventory management, and analytics dashboard.",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+    tags: ["E-commerce", "Full Stack"],
+    category: "Development"
+  },
 ];
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, index }) => {
   const [ref, isInView] = useInView(0.2);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.5 }}
-      className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800"
-    >
-      <div className="h-48 overflow-hidden">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
-        />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-        <p className="text-gray-400 mb-4">{project.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
+    <div
+  ref={ref}
+  className={`group relative bg-gray-900/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800/50 transition-all duration-700 ease-out hover:border-teal-500/30 hover:shadow-xl hover:shadow-teal-500/10 hover:scale-[1.02]
+    ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+  `}
+  style={{ transitionDelay: `${index * 100}ms` }}
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+>
+  {/* Image Container */}
+  <div className="relative h-48 overflow-hidden rounded-t-2xl">
+    <img
+      src={project.image}
+      alt={project.title}
+      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      loading="lazy"
+    />
+    {/* Overlay gradient */}
+    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+  </div>
+
+  {/* Content */}
+  <div className="p-6">
+    {/* Moved category tags here */}
+    <div className="mb-3 flex flex-wrap gap-2">
+      {project.tags.map((tag, tagIndex) => (
+        <span
+          key={tagIndex}
+          className="px-3 py-1 bg-gray-900/80 backdrop-blur-sm text-gray-300 text-xs font-medium rounded-full border border-gray-700/50 transition-all duration-300 group-hover:bg-teal-600/20 group-hover:border-teal-500/30 group-hover:text-teal-300"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+
+    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-teal-300 transition-colors duration-300">
+      {project.title}
+    </h3>
+    <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+      {project.description}
+    </p>
+  </div>
+
+  {/* Hover effects */}
+  <div className="absolute inset-0 ring-1 ring-teal-500/0 group-hover:ring-teal-500/20 rounded-2xl transition-all duration-300" />
+
+  {/* Bottom border animation */}
+  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-500 group-hover:w-full" />
+</div>
+
   );
 };
 
-export default function TopProjects() {
+const FilterButton = ({ label, isActive, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+      isActive
+        ? 'bg-gradient-to-r from-teal-600 to-blue-600 text-white shadow-lg shadow-teal-500/25'
+        : 'bg-gray-800/60 text-gray-400 border border-gray-700/50 hover:bg-gray-700/60 hover:text-gray-300 hover:border-gray-600/50'
+    }`}
+  >
+    {label}
+  </button>
+);
+
+export default function ProjectsSection() {
+  const [headerRef, headerInView] = useInView(0.3);
+  const [activeFilter, setActiveFilter] = useState('All');
+  
+  const categories = ['All', 'Design', 'Development'];
+  
+  const filteredProjects = activeFilter === 'All' 
+    ? projects 
+    : projects.filter(project => project.category === activeFilter);
+
   return (
     <section className="py-20 bg-black relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Featured Projects</span>
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-900/5 via-black to-blue-900/5" />
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-teal-400/10 rounded-full animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${15 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Header */}
+        <div 
+          ref={headerRef}
+          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+            headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-teal-300 text-sm font-medium">Featured Projects</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Our Top Projects
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Discover our most impactful solutions that have transformed businesses
-            and delighted users worldwide.
+          
+          {/* <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-white via-teal-200 to-blue-200 bg-clip-text text-transparent">
+              Our Latest Work
+            </span>
+          </h2> */}
+          
+          <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            Discover our most impactful solutions that have transformed businesses and delighted users worldwide
           </p>
+
+          {/* Filter buttons */}
+          {/* <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
+              <FilterButton
+                key={category}
+                label={category}
+                isActive={activeFilter === category}
+                onClick={() => setActiveFilter(category)}
+              />
+            ))}
+          </div> */}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} />
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={`${activeFilter}-${index}`} project={project} index={index} />
           ))}
         </div>
+
+        {/* Call to action */}
+        {/* <div className="text-center mt-16">
+          <button className="px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+            View All Projects
+          </button>
+        </div> */}
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          33% { transform: translateY(-10px) rotate(120deg); }
+          66% { transform: translateY(5px) rotate(240deg); }
+        }
+        .animate-float {
+          animation: float linear infinite;
+        }
+      `}</style>
     </section>
   );
 }

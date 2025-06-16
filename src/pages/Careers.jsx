@@ -6,27 +6,86 @@ const CareersHero = () => {
   const [ref, isInView] = useInView(0.2);
 
   return (
-    <section className="min-h-[80vh] bg-black relative flex items-center">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <motion.div
+    <section className="min-h-screen bg-black relative overflow-hidden flex items-center">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-900/10 via-black to-blue-900/10" />
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(25)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-teal-400/20 rounded-full animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${15 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+        <div 
           ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
+          className={`text-center transition-all duration-1000 ease-out ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Join Our Team</span>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-teal-300 text-sm font-medium">Join Our Team</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Build the Future with Us
+          
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-white via-teal-200 to-blue-200 bg-clip-text text-transparent">
+              Build the Future 
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+              With Us
+            </span>
           </h1>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+          
+          <p className="text-gray-400 text-sm md:text-lg max-w-4xl mx-auto leading-relaxed mb-12">
             Join our team of innovators and help shape the future of technology. We're always looking for talented individuals to join our mission.
-          </p>
-        </motion.div>
+</p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button className="px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              Open Positions
+            </button>
+            <button className="px-8 py-4 border border-gray-600 text-gray-300 font-semibold rounded-full hover:border-gray-500 hover:text-white transition-all duration-300">
+              Life at Zanvionics
+            </button>
+          </div>
+        </div>
       </div>
     </section>
+
+    // <section className="min-h-[80vh] bg-black relative flex items-center">
+    //   <div className="max-w-7xl mx-auto px-6 py-20">
+    //     <motion.div
+    //       ref={ref}
+    //       initial={{ opacity: 0, y: 20 }}
+    //       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+    //       transition={{ duration: 0.5 }}
+    //       className="text-center"
+    //     >
+    //       <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
+    //         <span className="text-purple-300 text-sm font-medium">Join Our Team</span>
+    //       </div>
+    //       <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+    //         Build the Future with Us
+    //       </h1>
+    //       <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+    //         Join our team of innovators and help shape the future of technology. We're always looking for talented individuals to join our mission.
+    //       </p>
+    //     </motion.div>
+    //   </div>
+    // </section>
   );
 };
 
@@ -68,9 +127,9 @@ const Benefits = () => {
     <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Benefits</span>
-          </div>
+          <div className="inline-block bg-teal-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-teal-300 text-sm font-medium">Benefits</span>
+            </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Why Work With Us
           </h2>
@@ -84,7 +143,7 @@ const Benefits = () => {
               transition={{ delay: index * 0.2 }}
               className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800"
             >
-              <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-teal-500/20 rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl">{benefit.icon}</span>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">{benefit.title}</h3>
@@ -133,9 +192,9 @@ const OpenPositions = () => {
     <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Open Positions</span>
-          </div>
+          <div className="inline-block bg-teal-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-teal-300 text-sm font-medium">Open Positions</span>
+            </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Current Opportunities
           </h2>
@@ -154,18 +213,18 @@ const OpenPositions = () => {
                   <h3 className="text-xl font-bold text-white mb-2">{position.title}</h3>
                   <p className="text-gray-300 mb-4">{position.description}</p>
                   <div className="flex flex-wrap gap-4">
-                    <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-sm">
                       {position.department}
                     </span>
-                    <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-sm">
                       {position.location}
                     </span>
-                    <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-sm">
                       {position.type}
                     </span>
                   </div>
                 </div>
-                <button className="mt-4 md:mt-0 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300">
+                <button className="mt-4 md:mt-0 bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300">
                   Apply Now
                 </button>
               </div>
@@ -201,9 +260,9 @@ const Culture = () => {
     <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Our Culture</span>
-          </div>
+          <div className="inline-block bg-teal-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-teal-300 text-sm font-medium">Our Culture</span>
+            </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Life at zanvionics
           </h2>

@@ -1,111 +1,126 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import useInView from '../hook/useInView';
+import React, { useState, useEffect } from 'react';
 
-const AboutHero = () => {
-  const [ref, isInView] = useInView(0.2);
+// Simple intersection observer hook
+const useInView = (threshold = 0.1) => {
+  const [ref, setRef] = useState(null);
+  const [isInView, setIsInView] = useState(false);
 
-  return (
-    <section className="min-h-[80vh] bg-black relative flex items-center">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-        >
-          <div>
-            <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-              <span className="text-purple-300 text-sm font-medium">About Us</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Innovating the Future of Technology
-            </h1>
-            <p className="text-gray-300 text-lg mb-8">
-              We're a team of passionate technologists, innovators, and problem-solvers dedicated to transforming businesses through cutting-edge solutions.
-            </p>
-          </div>
-          <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl"></div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
+  useEffect(() => {
+    if (!ref) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold }
+    );
+
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, [ref, threshold]);
+
+  return [setRef, isInView];
 };
 
-const Mission = () => {
-  const [ref, isInView] = useInView(0.2);
+// Hero Section
+const HeroSection = () => {
+  const [ref, isInView] = useInView(0.3);
 
   return (
-    <section className="py-20 bg-black">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
+    <section className="min-h-screen bg-black relative overflow-hidden flex items-center">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-900/10 via-black to-blue-900/10" />
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(25)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-teal-400/20 rounded-full animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${15 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+        <div 
           ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
+          className={`text-center transition-all duration-1000 ease-out ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Our Mission</span>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600/20 to-blue-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-6 py-3 mb-8">
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <span className="text-teal-300 text-sm font-medium">About Our Company</span>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Empowering Digital Innovation
-          </h2>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-            Our mission is to empower businesses with innovative technology solutions that drive growth, efficiency, and success in the digital age.
+          
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-white via-teal-200 to-blue-200 bg-clip-text text-transparent">
+              We Build Digital
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+              Experiences
+            </span>
+          </h1>
+          
+          <p className="text-gray-400 text-sm md:text-lg max-w-4xl mx-auto leading-relaxed mb-12">
+            We're a team of passionate creators, developers, and strategists dedicated to transforming 
+            ideas into powerful digital solutions that drive real business results.
           </p>
-        </motion.div>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button className="px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              Our Story
+            </button>
+            <button className="px-8 py-4 border border-gray-600 text-gray-300 font-semibold rounded-full hover:border-gray-500 hover:text-white transition-all duration-300">
+              Meet the Team
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
-const Values = () => {
-  const values = [
-    {
-      title: "Innovation",
-      description: "We constantly push boundaries and explore new technologies."
-    },
-    {
-      title: "Excellence",
-      description: "We strive for the highest quality in everything we do."
-    },
-    {
-      title: "Collaboration",
-      description: "We believe in the power of teamwork and partnership."
-    },
-    {
-      title: "Integrity",
-      description: "We maintain the highest ethical standards in our work."
-    }
+// Stats Section
+const StatsSection = () => {
+  const [ref, isInView] = useInView(0.5);
+  
+  const stats = [
+    { number: "50+", label: "Projects Completed", icon: "🚀" },
+    { number: "30+", label: "Happy Clients", icon: "😊" },
+    { number: "5+", label: "Years Experience", icon: "⭐" },
+    { number: "24/7", label: "Support Available", icon: "💬" }
   ];
 
   return (
-    <section className="py-20 bg-black">
+    <section className="py-20 bg-gray-900/20">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Our Values</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            What Drives Us
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {values.map((value, index) => (
-            <motion.div
+        <div 
+          ref={ref}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8"
+        >
+          {stats.map((stat, index) => (
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800"
+              className={`text-center transition-all duration-700 ease-out ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <h3 className="text-xl font-bold text-white mb-4">{value.title}</h3>
-              <p className="text-gray-300">{value.description}</p>
-            </motion.div>
+              <div className="text-4xl mb-4">{stat.icon}</div>
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent mb-2">
+                {stat.number}
+              </div>
+              <div className="text-gray-400 text-sm md:text-base">{stat.label}</div>
+            </div>
           ))}
         </div>
       </div>
@@ -113,62 +128,227 @@ const Values = () => {
   );
 };
 
-const Team = () => {
+// Story Section
+const StorySection = () => {
+  const [ref, isInView] = useInView(0.3);
+
+  return (
+    <section className="py-20 bg-black">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div 
+            ref={ref}
+            className={`transition-all duration-1000 ease-out ${
+              isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}
+          >
+            <div className="inline-block bg-teal-600/20 backdrop-blur-sm border border-teal-500/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-teal-300 text-sm font-medium">Our Journey</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              From Vision to <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">Reality</span>
+            </h2>
+            
+            <p className="text-gray-400 text-lg leading-relaxed mb-6">
+              Founded in 2019, we started as a small team of passionate developers and designers 
+              who believed technology could solve complex business challenges. What began as a 
+              vision has grown into a trusted partner for businesses worldwide.
+            </p>
+            
+            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+              Today, we combine cutting-edge technology with creative thinking to deliver 
+              solutions that not only meet requirements but exceed expectations. Our journey 
+              is driven by one simple belief: great digital experiences create lasting impact.
+            </p>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-teal-500 rounded-full"></div>
+                <span className="text-gray-300">Innovation-first approach to every project</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-gray-300">Client success is our primary measure of success</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-teal-500 rounded-full"></div>
+                <span className="text-gray-300">Continuous learning and adaptation</span>
+              </div>
+            </div>
+          </div>
+
+          <div 
+            className={`transition-all duration-1000 ease-out ${
+              isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            }`}
+          >
+            <div className="relative">
+              <div className="bg-gradient-to-br from-teal-600/20 to-blue-600/20 backdrop-blur-sm rounded-2xl p-8 border border-teal-500/30">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="bg-gray-900/60 rounded-xl p-6 text-center">
+                    <div className="text-2xl font-bold text-teal-400 mb-2">2019</div>
+                    <div className="text-gray-400 text-sm">Company Founded</div>
+                  </div>
+                  <div className="bg-gray-900/60 rounded-xl p-6 text-center">
+                    <div className="text-2xl font-bold text-blue-400 mb-2">2021</div>
+                    <div className="text-gray-400 text-sm">Team Expansion</div>
+                  </div>
+                  <div className="bg-gray-900/60 rounded-xl p-6 text-center">
+                    <div className="text-2xl font-bold text-teal-400 mb-2">2023</div>
+                    <div className="text-gray-400 text-sm">AI Integration</div>
+                  </div>
+                  <div className="bg-gray-900/60 rounded-xl p-6 text-center">
+                    <div className="text-2xl font-bold text-blue-400 mb-2">2025</div>
+                    <div className="text-gray-400 text-sm">Global Reach</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Values Section
+const ValuesSection = () => {
+  const [ref, isInView] = useInView(0.3);
+  
+  const values = [
+    {
+      icon: "💡",
+      title: "Innovation",
+      description: "We constantly explore new technologies and methodologies to deliver cutting-edge solutions."
+    },
+    {
+      icon: "🤝",
+      title: "Collaboration",
+      description: "We believe the best results come from working closely with our clients as true partners."
+    },
+    {
+      icon: "⚡",
+      title: "Excellence",
+      description: "We're committed to delivering the highest quality in everything we create and every service we provide."
+    },
+    {
+      icon: "🔒",
+      title: "Integrity",
+      description: "Transparency, honesty, and ethical practices are the foundation of all our relationships."
+    }
+  ];
+
+  return (
+    <section className="py-20 bg-gray-900/20">
+      <div className="max-w-7xl mx-auto px-6">
+        <div 
+          ref={ref}
+          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Our <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">Core Values</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+            These principles guide every decision we make and every solution we create
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {values.map((value, index) => (
+            <div
+              key={index}
+              className={`bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-800/50 hover:border-teal-500/30 transition-all duration-500 hover:scale-105 ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <div className="text-4xl mb-6 text-center">{value.icon}</div>
+              <h3 className="text-xl font-bold text-white mb-4 text-center">{value.title}</h3>
+              <p className="text-gray-400 leading-relaxed text-center">{value.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Team Section
+const TeamSection = () => {
+  const [ref, isInView] = useInView(0.3);
+  
   const team = [
     {
-      name: "John Smith",
-      role: "CEO & Founder",
-      image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
+      name: "Alex Johnson",
+      role: "Founder & CEO",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      description: "Visionary leader with 10+ years in tech innovation"
     },
     {
-      name: "Sarah Johnson",
+      name: "Sarah Chen",
       role: "CTO",
-      image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      description: "Tech expert specializing in scalable architectures"
     },
     {
-      name: "Michael Chen",
-      role: "Head of Design",
-      image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg"
+      name: "Marcus Rodriguez",
+      role: "Lead Designer",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      description: "Creative director with award-winning design portfolio"
     },
     {
-      name: "Emily Davis",
-      role: "Lead Developer",
-      image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg"
+      name: "Emily Watson",
+      role: "Project Manager",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      description: "Operations expert ensuring seamless project delivery"
     }
   ];
 
   return (
     <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <div className="inline-block bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="text-purple-300 text-sm font-medium">Our Team</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Meet the Innovators
+        <div 
+          ref={ref}
+          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Meet Our <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">Team</span>
           </h2>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+            The talented individuals behind every successful project
+          </p>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800"
+              className={`group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800/50 hover:border-teal-500/30 transition-all duration-500 hover:scale-105 ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <div className="h-64 overflow-hidden">
+              <div className="relative overflow-hidden">
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-                <p className="text-gray-400">{member.role}</p>
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-teal-300 transition-colors duration-300">
+                  {member.name}
+                </h3>
+                <div className="text-teal-400 font-medium mb-3">{member.role}</div>
+                <p className="text-gray-400 text-sm leading-relaxed">{member.description}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -176,13 +356,64 @@ const Team = () => {
   );
 };
 
-export default function About() {
+// CTA Section
+const CTASection = () => {
+  const [ref, isInView] = useInView(0.5);
+
   return (
-    <div className="bg-black">
-      <AboutHero />
-      <Mission />
-      <Values />
-      <Team />
+    <section className="py-20 bg-gradient-to-br from-teal-900/20 via-black to-blue-900/20 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-teal-600/5 to-blue-600/5" />
+      
+      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <div 
+          ref={ref}
+          className={`transition-all duration-1000 ease-out ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Ready to <span className="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">Work Together?</span>
+          </h2>
+          
+          <p className="text-gray-400 text-xl leading-relaxed mb-10">
+            Let's transform your ideas into powerful digital solutions that drive real results
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button className="px-10 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              Start Your Project
+            </button>
+            <button className="px-10 py-4 border border-gray-600 text-gray-300 font-semibold rounded-full hover:border-gray-500 hover:text-white transition-all duration-300">
+              Schedule Consultation
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Main About Page Component
+export default function AboutPage() {
+  return (
+    <div className="bg-black min-h-screen">
+      <HeroSection />
+      <StatsSection />
+      <StorySection />
+      <ValuesSection />
+      <TeamSection />
+      <CTASection />
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          33% { transform: translateY(-10px) rotate(120deg); }
+          66% { transform: translateY(5px) rotate(240deg); }
+        }
+        .animate-float {
+          animation: float linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

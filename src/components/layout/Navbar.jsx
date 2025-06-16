@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
+import logo from '../../assets/logo.png'; // Ensure correct path to your logo
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -10,7 +11,6 @@ const Navbar = () => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };
-
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -32,16 +32,15 @@ const Navbar = () => {
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
                 isScrolled
-                    ? 'bg-white/10 backdrop-blur-lg border-b border-white/20 shadow-md'
-                    : 'bg-transparent'
+? 'bg-white/10 backdrop-blur-lg border-b border-white/20 shadow-md'                    : 'bg-transparent'
             }`}
         >
             <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">X</span>
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                            <img src={logo} alt="logo" />
                         </div>
                         <span className="text-xl font-bold transition-colors duration-300 text-white">
                             zanvionics
@@ -54,7 +53,7 @@ const Navbar = () => {
                             <Link
                                 key={item.name}
                                 to={item.path}
-                                className="font-medium transition-colors duration-300 hover:text-purple-400 text-gray-300"
+                                className="font-medium text-white/80 hover:text-[#00B4A8] transition-colors duration-300"
                             >
                                 {item.name}
                             </Link>
@@ -65,7 +64,7 @@ const Navbar = () => {
                     <div className="flex items-center gap-4">
                         <Link
                             to="/contact"
-                            className="hidden md:inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
+                            className="hidden md:inline-block bg-[#00B4A8] hover:bg-[#007399] text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
                         >
                             Get Started
                         </Link>
@@ -82,13 +81,13 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden mt-4 flex flex-col gap-4 bg-black/80 rounded-lg p-4">
+                    <div className="md:hidden mt-4 flex flex-col gap-4 bg-[#00587A]/95 rounded-lg p-4">
                         {navLinks.map((item) => (
                             <Link
                                 key={item.name}
                                 to={item.path}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="text-gray-200 hover:text-purple-400 transition-colors duration-300"
+                                className="text-white/90 hover:text-[#00B4A8] transition-colors duration-300"
                             >
                                 {item.name}
                             </Link>
@@ -96,7 +95,7 @@ const Navbar = () => {
                         <Link
                             to="/contact"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-full text-center"
+                            className="bg-[#00587A] hover:bg-[#007399] text-white font-semibold px-6 py-2 rounded-full text-center"
                         >
                             Get Started
                         </Link>
