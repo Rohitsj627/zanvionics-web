@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AnimatedBackground = () => {
     return (
@@ -72,16 +73,20 @@ export default function AIAutomationLanding() {
 
                 {/* CTA buttons - Updated colors */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-teal-500/25 flex items-center gap-2">
+                    <Link to="/contact">
+                    <button className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-teal-500/25 flex items-center gap-2">
                         Get in touch
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </button>
+                    </Link>
 
-                    <button className="text-white hover:text-teal-300 font-semibold px-8 py-3 rounded-lg transition-all duration-300 border border-gray-600 hover:border-teal-500 backdrop-blur-sm">
+                    <Link to="/services">
+                    <button className="cursor-pointer text-white hover:text-teal-300 font-semibold px-8 py-3 rounded-lg transition-all duration-300 border border-gray-600 hover:border-teal-500 backdrop-blur-sm">
                         View services
                     </button>
+                    </Link>
                 </div>
             </div>
 

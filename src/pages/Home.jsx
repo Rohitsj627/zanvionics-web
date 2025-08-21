@@ -12,7 +12,7 @@ function Home() {
   return (
     <div className="bg-black">
       <AIAutomationLanding />
-      <Brands />
+      {/* <Brands /> */}
       <ServicesSection />
       <TopProjects />
       {/* <TopBlogs /> */}

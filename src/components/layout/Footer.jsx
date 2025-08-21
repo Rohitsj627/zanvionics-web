@@ -18,6 +18,9 @@ const Footer = () => {
             <p className="text-sm text-gray-400">
               Transforming businesses through innovative technology solutions.
             </p>
+            <Link to="/dashboard" className="flex items-center text-gray-400 hover:text-white space-x-2 mt-4">
+              Admin Login 
+            </Link>
           </div>
 
           {/* Quick Links */}
@@ -65,16 +68,16 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
               <li>
-                <a href="mailto:contact@zanvionics.com" className="hover:text-[#00B4A8] transition-colors">
-                  contact@zanvionics.com
+                <a href="mailto:info@zanvionics.com" className="hover:text-[#00B4A8] transition-colors">
+                  info@zanvionics.com
                 </a>
               </li>
               <li>
-                <a href="tel:+15551234567" className="hover:text-[#00B4A8] transition-colors">
+                {/* <a href="tel:+15551234567" className="hover:text-[#00B4A8] transition-colors">
                   +1 (555) 123-4567
-                </a>
+                </a> */}
               </li>
-              <li>123 Tech Street, Silicon Valley, CA 94025</li>
+              <li>85 Great Portland Street, First Floor, London, United Kingdom, W1W 7LT</li>
             </ul>
           </div>
         </div>

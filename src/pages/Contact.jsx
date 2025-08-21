@@ -111,16 +111,16 @@ const ContactForm = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-gray-300">
                 <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📍</span>
-                <span>123 Tech Street, Silicon Valley, CA 94025</span>
+                <span>85 Great Portland Street, First Floor, London, United Kingdom, W1W 7LT</span>
               </div>
               <div className="flex items-center gap-4 text-gray-300">
                 <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📧</span>
-                <span>contact@zanvionics.com</span>
+                <span>info@zanvionics.com</span>
               </div>
-              <div className="flex items-center gap-4 text-gray-300">
+              {/* <div className="flex items-center gap-4 text-gray-300">
                 <span className="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center">📞</span>
                 <span>+1 (555) 123-4567</span>
-              </div>
+              </div> */}
             </div>
           </motion.div>
 
