@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import logo from '../../assets/logo.png'; // Ensure correct path to your logo
+import ThemeToggle from '../ui/ThemeToggle';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -62,11 +63,12 @@ const Navbar = () => {
 
                     {/* CTA Button & Mobile Menu Toggle */}
                     <div className="flex items-center gap-4">
+                        <ThemeToggle />
                         <Link
                             to="/contact"
-                            className="hidden md:inline-block bg-[#00B4A8] hover:bg-[#007399] text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
+                            className="hidden md:inline-block bg-gradient-to-r from-teal-600 to-blue-600 hover:shadow-lg hover:shadow-teal-500/25 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
                         >
-                            Get Started
+                            Get a Free Consultation
                         </Link>
 
                         {/* Mobile Menu Toggle */}
@@ -95,9 +97,9 @@ const Navbar = () => {
                         <Link
                             to="/contact"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="bg-[#00587A] hover:bg-[#007399] text-white font-semibold px-6 py-2 rounded-full text-center"
+                            className="bg-gradient-to-r from-teal-600 to-blue-600 hover:shadow-lg hover:shadow-teal-500/25 text-white font-semibold px-6 py-2 rounded-full text-center transition-all duration-300 hover:scale-105"
                         >
-                            Get Started
+                            Get a Free Consultation
                         </Link>
                     </div>
                 )}

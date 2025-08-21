@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import WhyChooseUs from '../components/ui/WhyChooseUs';
 
 // Simple intersection observer hook
 const useInView = (threshold = 0.1) => {
@@ -285,27 +286,46 @@ const TeamSection = () => {
       name: "Alex Johnson",
       role: "Founder & CEO",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      description: "Visionary leader with 10+ years in tech innovation"
+      description: "Visionary leader with 10+ years in tech innovation",
+      bio: "Alex founded Zanvionics with a mission to democratize cutting-edge technology for businesses of all sizes. With a background in computer science from MIT and previous experience at Google and Microsoft, Alex brings deep technical expertise and strategic vision to every project.",
+      expertise: ["Strategic Planning", "Technology Leadership", "Business Development"],
+      linkedin: "#",
+      twitter: "#"
     },
     {
       name: "Sarah Chen",
       role: "CTO",
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      description: "Tech expert specializing in scalable architectures"
+      description: "Tech expert specializing in scalable architectures",
+      bio: "Sarah leads our technical team with over 8 years of experience in building scalable systems. She holds a PhD in Computer Science from Stanford and has architected solutions for companies ranging from startups to Fortune 500 enterprises.",
+      expertise: ["System Architecture", "Cloud Computing", "DevOps"],
+      linkedin: "#",
+      twitter: "#"
     },
     {
       name: "Marcus Rodriguez",
       role: "Lead Designer",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      description: "Creative director with award-winning design portfolio"
+      description: "Creative director with award-winning design portfolio",
+      bio: "Marcus brings creativity and user-centered design thinking to every project. With a background in industrial design and 6 years in digital product design, he has won multiple design awards and has worked with brands like Apple and Nike.",
+      expertise: ["UI/UX Design", "Design Systems", "User Research"],
+      linkedin: "#",
+      twitter: "#"
     },
     {
       name: "Emily Watson",
       role: "Project Manager",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      description: "Operations expert ensuring seamless project delivery"
+      description: "Operations expert ensuring seamless project delivery",
+      bio: "Emily ensures every project is delivered on time and exceeds client expectations. With PMP certification and 7 years of experience in agile project management, she has successfully delivered over 100 projects across various industries.",
+      expertise: ["Project Management", "Agile Methodologies", "Client Relations"],
+      linkedin: "#",
+      twitter: "#"
     }
   ];
+
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="py-20 bg-black">
@@ -332,6 +352,10 @@ const TeamSection = () => {
                 isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${index * 150}ms` }}
+              onClick={() => {
+                setSelectedMember(member);
+                setIsModalOpen(true);
+              }}
             >
               <div className="relative overflow-hidden">
                 <img
@@ -340,6 +364,20 @@ const TeamSection = () => {
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                {/* Social Links */}
+                <div className="absolute bottom-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <a href={member.linkedin} className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                  <a href={member.twitter} className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-teal-300 transition-colors duration-300">
@@ -347,10 +385,84 @@ const TeamSection = () => {
                 </h3>
                 <div className="text-teal-400 font-medium mb-3">{member.role}</div>
                 <p className="text-gray-400 text-sm leading-relaxed">{member.description}</p>
+                
+                {/* Expertise Tags */}
+                <div className="mt-4 flex flex-wrap gap-1">
+                  {member.expertise.slice(0, 2).map((skill, skillIndex) => (
+                    <span key={skillIndex} className="px-2 py-1 bg-teal-600/20 text-teal-300 text-xs rounded-full">
+                      {skill}
+                    </span>
+                  ))}
+                  {member.expertise.length > 2 && (
+                    <span className="px-2 py-1 bg-gray-600/20 text-gray-400 text-xs rounded-full">
+                      +{member.expertise.length - 2} more
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Team Member Modal */}
+        {isModalOpen && selectedMember && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-2xl w-full animate-slide-up shadow-2xl">
+              <div className="relative">
+                <img
+                  src={selectedMember.image}
+                  alt={selectedMember.name}
+                  className="w-full h-64 object-cover rounded-t-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-2xl" />
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg transition-all duration-200 text-white"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <div className="absolute bottom-4 left-6">
+                  <h3 className="text-2xl font-bold text-white font-heading">{selectedMember.name}</h3>
+                  <p className="text-teal-300 font-medium">{selectedMember.role}</p>
+                </div>
+              </div>
+              
+              <div className="p-8">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  {selectedMember.bio}
+                </p>
+                
+                <div className="mb-6">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Areas of Expertise</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMember.expertise.map((skill, index) => (
+                      <span key={index} className="px-3 py-2 bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-full text-sm font-medium">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex gap-4">
+                  <a href={selectedMember.linkedin} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                  </a>
+                  <a href={selectedMember.twitter} className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                    Twitter
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -399,6 +511,7 @@ export default function AboutPage() {
     <div className="bg-black min-h-screen">
       <HeroSection />
       <StatsSection />
+      <WhyChooseUs />
       <StorySection />
       <ValuesSection />
       <TeamSection />

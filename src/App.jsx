@@ -15,35 +15,42 @@ import CRUDApplications from './pages/dashboard/CRUDApplications';
 import CRUDTestimonial from './pages/dashboard/CRUDTestimonial';
 import Login from './pages/Login.jsx'; // FIX: Import added
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import BackToTop from './components/ui/BackToTop';
+import ChatWidget from './components/ui/ChatWidget';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-black">
-          <Navbar />
-          <Routes>
-            {/* Public Pages */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+            <Navbar />
+            <Routes>
+              {/* Public Pages */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
 
-            {/* Dashboard and Sub-Routes */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/jobs" element={<CRUDJobs />} />
-            <Route path="/dashboard/projects" element={<CRUDProjects />} />
-            <Route path="/dashboard/blogs" element={<CRUDBlogs />} />
-            <Route path="/dashboard/messages" element={<CRUDApplications />} />
-            <Route path="/dashboard/testimonials" element={<CRUDTestimonial />} />
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+              {/* Dashboard and Sub-Routes */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/jobs" element={<CRUDJobs />} />
+              <Route path="/dashboard/projects" element={<CRUDProjects />} />
+              <Route path="/dashboard/blogs" element={<CRUDBlogs />} />
+              <Route path="/dashboard/messages" element={<CRUDApplications />} />
+              <Route path="/dashboard/testimonials" element={<CRUDTestimonial />} />
+            </Routes>
+            <Footer />
+            <BackToTop />
+            <ChatWidget />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
