@@ -1,115 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.png'; // Make sure this path matches your project structure
-import Newsletter from '../ui/Newsletter';
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Zanvionics</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Zanvionics | Web & App Development | AI Assistant Apps UK" />
+    <meta name="description" content="Zanvionics is a UK-based digital services company specializing in modern Web Development, Mobile App Development, and AI Assistant Applications for businesses." />
+    <meta name="keywords" content="Zanvionics, UK Web Development, App Development UK, AI Assistant App, AI development UK, digital solutions UK, software company UK" />
+    <meta name="author" content="Zanvionics Team" />
+    <meta name="robots" content="index, follow" />
 
-const Footer = () => {
-  return (
-    <footer className="bg-gray-950 dark:bg-gray-950 text-gray-300">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Newsletter Section */}
-        <div className="mb-12">
-          <Newsletter />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg overflow-hidden">
-                <img src={logo} alt="zanvionics logo" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-xl font-bold text-white">zanvionics</span>
-            </Link>
-            <p className="text-sm text-gray-400">
-              Transforming businesses through innovative technology solutions.
-            </p>
-            
-            {/* Social Links */}
-            <div className="flex gap-4 mt-4">
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <Link to="/dashboard" className="flex items-center text-gray-400 hover:text-white space-x-2 mt-4">
-              Admin Login 
-            </Link>
-          </div>
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="./src/assets/logo.png" />
+    <!-- Optional: Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="./src//assets/logo.png" />
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Quick Links</h3>
-            <ul className="space-y-2">
-              {['About', 'Services', 'Portfolio', 'Careers', 'Contact'].map((item) => (
-                <li key={item}>
-                  <Link
-                    to={`/${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-[#00B4A8] transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.zanvionics.com/" />
+    <meta property="og:title" content="Zanvionics | Digital Services in the UK" />
+    <meta property="og:description" content="Get high-quality web and mobile development, plus cutting-edge AI assistant solutions from Zanvionics." />
+    <meta property="og:image" content="https://www.zanvionics.com/og-image.jpg" />
 
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Services</h3>
-            <ul className="space-y-2">
-              {[
-                'Web Development',
-                'Mobile Apps',
-                'AI Solutions',
-                'Cloud Services',
-                'Digital Marketing'
-              ].map((service) => (
-                <li key={service}>
-                  <Link
-                    to="/services"
-                    className="text-gray-400 hover:text-[#00B4A8] transition-colors"
-                  >
-                    {service}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.zanvionics.com/" />
+    <meta property="twitter:title" content="Zanvionics | Digital Services in the UK" />
+    <meta property="twitter:description" content="Top-rated UK development agency for web, apps, and AI-powered solutions." />
+    <meta property="twitter:image" content="https://www.zanvionics.com/twitter-image.jpg" />
 
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li>
-                <a href="mailto:info@zanvionics.com" className="hover:text-[#00B4A8] transition-colors">
-                  info@zanvionics.com
-                </a>
-              </li>
-              <li>
-                {/* <a href="tel:+15551234567" className="hover:text-[#00B4A8] transition-colors">
-                  +1 (555) 123-4567
-                </a> */}
-              </li>
-              <li>85 Great Portland Street, First Floor, London, United Kingdom, W1W 7LT</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Line */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} <span className="text-white">zanvionics</span>. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.zanvionics.com/" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
